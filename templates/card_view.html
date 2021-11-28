@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Deck {{deck.name}}</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link rel="icon" type="image/x-icon" href="https://png.pngtree.com/thumb_back/fh260/background/20190221/ourmid/pngtree-invitation-card-black-gold-simple-ribbon-image_47453.jpg">
+        	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    </head>
+    <style>
+      @import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,800,900|Open Sans:400,600,800');
+      body {
+            font-family: "Open Sans";
+
+    background-color: #F1F2F3;
+	background-image: url('http://getwallpapers.com/wallpaper/full/a/5/d/544750.jpg');
+}
+      </style>
+    <body>
+      
+       <navbar style="position: sticky;top: 0;width:100%;background-color:maroon;" class="navbar text-white navbar-expand-lg ">
+            <a class="navbar-brand" href="#">
+                <i class="fa fa-forward" style="color:white;margin-left: 2em;"></i>
+                 <span style="padding: 10px;font-size: 25px;color:white">FlashCard Application</span>
+            </a>
+            <div class="text-light" style="position: absolute;right: 10px;"><i class="fas fa-user"></i> &nbsp;{{user.name}}</div>
+        </navbar>
+        
+        <div class="display-5" style="position: relative;top: 20px;text-align: center;"><b><h3 class="display-3 text-white"><strong>Deck: {{deck.name}}</strong></h3></b></div>
+        {%for card in deck.cards%}
+        <div name="card">
+        <div  style="background-color:tan;width: 60%;text-align: center;height: 50%;position:absolute;top: 0;bottom:0;right:0;left: 0;border-radius: 45px;border:3px solid rgba(255,255,255,0.5);margin:auto;">
+            <div class="display-3" style="color: navy;position: relative;top: 1em;">{{card.question}}</div>
+            <div id="answer-{{loop.index}}" style="display:none;font-size:3em;color: brown;padding: 50px;position: absolute;bottom:20px;top:100px;text-align:center;padding-left: 8em;padding-top: 70px;overflow:auto;"><center>{{card.answer}}</center></div>
+            
+        </div>
+        <button class="btn btn-light" id="next-btn-{{loop.index}}" style="position: fixed;bottom: 90px;right: 20%;display: block;" onclick="changeslide(1)">Next >></button>
+        <button class="btn btn-dark" id="answer-btn-{{loop.index}}" style="position: fixed;bottom: 90px;right: 47%;display: block;" onclick="showanswer()">Show Answer</button>
+        <button class="btn btn-light" id="prev-btn-{{loop.index}}" style="position: fixed;bottom: 90px;left: 20%;display: block;" onclick="changeslide(-1)"><< Prev</button>
+        <div id="review-panel-{{loop.index}}"  style="position: fixed;bottom: 90px;right: 40%;display: none;text-align: center;">
+            <p class="lead text-white">How did you find this question ?</p>
+           <div class="btn-group" role="group" style="background-color:white;">
+            <input type="radio" class="btn-check" name="difficulty" id="easy" autocomplete="off" checked>
+            <label class="btn btn-outline-dark" for="easy">Easy</label>
+          
+            <input type="radio" class="btn-check" name="difficulty" id="medium" autocomplete="off">
+            <label class="btn btn-outline-dark" for="medium">Medium</label>
+          
+            <input type="radio" class="btn-check" name="difficulty" id="hard" autocomplete="off">
+            <label class="btn btn-outline-dark" for="hard">Hard</label>
+              </div>
+        </div>
+        </div>
+        {%endfor%}
+
+        <script>
+            var cardindex=0;
+            showcard(cardindex);
+            function showanswer(){
+                document.getElementById("answer-"+(cardindex+1)).style.display="block";
+                document.getElementById("answer-btn-"+(cardindex+1)).style.display="none";
+                document.getElementById("review-panel-"+(cardindex+1)).style.display="block";
+            }
+            
+            function changeslide(i){
+                cardindex+=i;
+                showcard(cardindex);
+            }
+
+            function showcard(n){
+                var all_cards=document.getElementsByName("card");
+                var num_cards=all_cards.length;
+                var i;
+                for (i=0;i<num_cards;i++){
+                    all_cards[i].style.display="none";
+                }
+                
+                all_cards[n].style.display="block";
+                document.getElementById("answer-"+(cardindex+1)).style.display="none";
+                document.getElementById("answer-btn-"+(cardindex+1)).style.display="block";
+                document.getElementById("review-panel-"+(cardindex+1)).style.display="none";
+
+
+                if (n==(num_cards-1)){document.getElementById("next-btn-"+(cardindex+1)).disabled= true;}
+                else if (n==0){document.getElementById("prev-btn-"+(cardindex+1)).disabled= true;}
+                else{document.getElementById("next-btn-"+(cardindex+1)).disabled= false;document.getElementById("prev-btn-"+(cardindex+1)).disabled= false;}
+
+            }
+
+        </script>
+
+
+
+        <footer style="position: absolute;bottom: 0;width: 100% ;"class="bg-light text-center text-lg-start">
+            <div class="text-center p-3" style="color:white;background-color:  rgba(0, 0, 0, 0.651);">
+              <b>FLASHCARD APP</b>
+              
+            </div>
+        </footer>
+    </body>
